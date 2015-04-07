@@ -17,11 +17,11 @@ public class JsonReader {
 	 * @param tag: name of key
 	 * @return: value
 	 */
-	public String readJsonFile(String tag) {
+	public String readJsonFile(String tag, String filePath) {
 		JSONParser parser = new JSONParser();
 		String value = "";
 		try {
-			Object obj = parser.parse(new FileReader(System.getProperty("user.dir") + "\\appconfig.json"));
+			Object obj = parser.parse(new FileReader(System.getProperty("user.dir") + filePath));
 			JSONObject jsonObject = (JSONObject) obj;
 			value = (String) jsonObject.get(tag);
 		} catch (Exception e) {
@@ -36,12 +36,12 @@ public class JsonReader {
 	 * @param tag: name of key
 	 * @return: value 
 	 */
-	public String readJsonFile(String node, String tag) {
+	public String readJsonFile(String node, String tag, String filePath) {
 		JSONParser parser = new JSONParser();
 		JSONObject son = new JSONObject();
 		String value = "";
 		try {
-			Object obj = parser.parse(new FileReader(System.getProperty("user.dir") + "\\appconfig.json"));
+			Object obj = parser.parse(new FileReader(System.getProperty("user.dir") + filePath));
 			JSONObject jsonObject = (JSONObject) obj;
 			son = (JSONObject) jsonObject.get(node);
 			value = (String) son.get(tag);

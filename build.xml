@@ -1,0 +1,52 @@
+<project name="TestNGTest" default="test" basedir=".">
+
+   <!-- Define <testng> task -->
+   <property name="src" value="./src"/>
+   <property name="lib" value="./lib"/>
+   <property name="bin" value="./bin"/>
+   <property name="testng.output.dir" value="./test-output"/>
+
+   <path id="libraries">
+      <pathelement path="${bin}"/>
+      <fileset dir="${lib}">
+         <include name="**/*.jar"/>
+      </fileset>
+	</path>
+
+   <target name="clean" >
+      <delete dir="${bin}"/>
+      <mkdir dir="${bin}"/>
+      <!-- Create the output directory. -->
+      <delete dir="${testng.output.dir}"/>
+      <mkdir dir="${testng.output.dir}"/> 
+   </target>
+
+   <target name="compile" depends="clean">
+      <javac srcdir="${src}" destdir="${bin}" debug="true">
+         <classpath refid="libraries"/>
+      </javac>
+   </target>
+   
+   <target name="test" depends="compile">
+      <taskdef name="testng" classname="org.testng.TestNGAntTask">
+         <classpath>
+            <pathelement location="${bin}"/>
+            <fileset dir="${lib}">
+               <include name="**/*.jar"/>
+            </fileset>
+         </classpath>
+      </taskdef>
+
+      <testng outputdir="${testng.output.dir}" useDefaultListeners="false"
+                listeners="framework.utils.ReportNGListener" 
+	  groups="${groups}" verbose="2" >
+         <classpath  refid="libraries"/>
+		   <xmlfileset dir="./src/tests/" includes="${suites}"/>
+         <sysproperty key="browser" value="${browser}"/>
+         <sysproperty key="groups" value="${groups}"/>
+         <sysproperty key="JOB_NAME" value="${JOB_NAME}"/>
+         <sysproperty key="BUILD_NUMBER" value="${BUILD_NUMBER}"/>
+      </testng>
+   </target>
+  
+</project>

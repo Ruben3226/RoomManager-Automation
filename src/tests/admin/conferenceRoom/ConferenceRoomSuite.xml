@@ -1,0 +1,20 @@
+<suite name = "ConferenceRoom_Test_Suite">
+	<listeners>
+         <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name = "framework.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name = "RoomManager">
+         <classes>			
+			<!--TC27, TC32, TC08-->
+			<class name = "tests.admin.conferenceRoom.ResourceQuantityIsDisplayedInTheResourceAssociatedColumnInRoomGrid" />			      
+            <!--TC10-->
+			<class name = "tests.admin.conferenceRoom.AnEnabledRoomIsAvailableInTheTablet" />	
+			<!--TC11-->
+			<class name = "tests.admin.conferenceRoom.ForARoomDisabledTheTabletDoesNotScheduleMeetings" />
+			<!--TC12, TC13-->
+			<class name = "tests.admin.conferenceRoom.RoomAvailabilityCanBeEnabledOrDisabledWithEnableDisableButton" />	
+		 </classes>
+    </test>
+</suite>

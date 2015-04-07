@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import framework.selenium.SeleniumDriverManager;
-import framework.common.AppConfigConstants;
+
 /**
  * @title  Settings
  * @author Jose Cabrera
@@ -24,13 +24,12 @@ public class SettingsPage {
 	public SettingsPage() {
 		driver = SeleniumDriverManager.getManager().getDriver();
 		PageFactory.initElements(driver, this);
-		driver.get(AppConfigConstants.URL_TABLET);
 	}
 	
-	public HomePage selectRoom(String roomNum) {
+	public HomeTabletPage selectRoom(String roomNum) {
 		driver.findElement(By.xpath("//h4[contains(text(),'" + roomNum + "')]")).click();
 		acceptBtn.click();
-		return new HomePage();
+		return new HomeTabletPage();
 	}	
 	
 	public void quit() {

@@ -1,13 +1,11 @@
 package framework.pages.admin.resources;
 
 import static framework.common.UIMethods.doubleClick;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import framework.common.UIMethods;
 import framework.pages.admin.AbstractMainMenu;
 
@@ -56,7 +54,6 @@ public class ResourcesPage extends AbstractMainMenu{
 	 * @throws InterruptedException
 	 */
 	public ResourceInfoPage openResourceInfoPage(String resourceNameToSearch) throws InterruptedException {	
-		waitForMaskDisappears();
 		WebElement resourceName = driver.findElement(By.xpath("//span[contains(text(),'" + resourceNameToSearch + "')]"));
 		doubleClick(resourceName);
 		return new ResourceInfoPage();
@@ -69,7 +66,6 @@ public class ResourcesPage extends AbstractMainMenu{
 	 * @throws InterruptedException
 	 */	
 	public ResourcesPage selectResourceCheckbox(String resource) throws InterruptedException {
-		waitForMaskDisappears();
 		WebElement resourceName = driver.findElement(By.xpath("//*[@id='resourcesGrid']/descendant::"
 				+ "*/span[contains(text(),'" + resource + "')]"));
 		if (resourceName.isDisplayed()) {
@@ -119,7 +115,7 @@ public class ResourcesPage extends AbstractMainMenu{
 	public boolean searchTotalItemsValue(String value) throws InterruptedException {
 		String locator = "//span[contains(text(),'Total Items: " + value + "')]";
 		wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath(locator)));
-		return driver.findElement(By.xpath(locator)).isDisplayed();
+		return UIMethods.isElementPresent(By.xpath(locator));
 	}
 
 	/**
@@ -130,9 +126,9 @@ public class ResourcesPage extends AbstractMainMenu{
 	 * @throws InterruptedException
 	 */
 	public boolean searchSelectedItemsValue(String value) throws InterruptedException {
-		String locator = "//span[contains(text(),'Selected Items: " + value + "')]";
-		waitForMaskDisappears();
-		return driver.findElement(By.xpath(locator)).isDisplayed();
+		By locator = By.xpath("//span[contains(text(),'Selected Items: " + value + "')]");
+		wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+		return UIMethods.isElementPresent(locator);
 	}
 
 	/**

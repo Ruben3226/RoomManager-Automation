@@ -3,6 +3,9 @@ package framework.pages.admin.conferencerooms;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import framework.common.UIMethods;
 
 /**
  * This class represents Room Info page
@@ -18,21 +21,27 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 
 	@FindBy(xpath = "//input[@ng-model='selectedRoom.capacity']")
 	WebElement roomCapacityTxtBox;
-	
+
 	@FindBy(xpath = "//div/input[@ng-model='selectedRoom.customDisplayName']")
 	WebElement roomDisplayNameTxtBox;
 
 	@FindBy(xpath = "//span[@class='select2-chosen']")
-	WebElement locationTxtBox;
-	
-	@FindBy (xpath = "//input[@role='combobox']")
-	WebElement locationSecondTxtBox;
-	
+	WebElement locationCmbBox;
+
 	@FindBy(xpath = "//small[@class='inline-error']")
 	WebElement errorDisplayName;
-	
+
 	@FindBy(xpath = "//button[@ng-click='enableDisableRoom(selectedRoom)']")
 	WebElement disableIcon;
+
+	@FindBy(xpath = "//button[@ng-hide='selectedRoom.enabled']")
+	WebElement enableIcon;
+
+	@FindBy(xpath = "//input[@role='combobox']")
+	WebElement locationTxtBox;
+
+	@FindBy(xpath = "//li[@class='select2-no-results']")
+	WebElement locationMessageLbl;
 
 	/**
 	 * [RB]This method sets the display Name of a room
@@ -80,19 +89,28 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 	 * @return the room location
 	 */
 	public String getRoomLocation() {
-		return locationTxtBox.getText();
+		return locationCmbBox.getText();
 	}
 
 	/**
 	 * [RB]This method sets the location of a room
 	 * @param location
-	 * @return
+	 * @return the same page
 	 */
 	public RoomInfoPage setLocation(String location) {
-		locationTxtBox.click();
-		locationSecondTxtBox.sendKeys(location);
-		driver.findElement(By.xpath("//span[contains(text(),'" + location
-				+ "')and@class='select2-match']")).click();
+		locationCmbBox.click();
+		locationTxtBox.sendKeys(location);
+		
+		if(isNoMatchFoundMessage()){
+			//case to invalid room location
+			return this;
+		}
+		else{
+			//case to valid room location
+			driver.findElement(By.xpath("//span[contains(text(),'" + location
+			+ "')and@class='select2-match']")).click();
+
+		}
 		return new RoomInfoPage();
 	}
 
@@ -106,7 +124,7 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 		roomCapacityTxtBox.sendKeys(roomCapacity);
 		return new RoomInfoPage();
 	}
-	
+
 	/**
 	 * [ML]This method gets error message from RoomInfoPage when blank text is 
 	 * inserted into room display name 
@@ -115,7 +133,7 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 	public String getErrorMessageDisplayName() {
 		return errorDisplayName.getText();
 	}
-	
+
 	/**
 	 * [ML]This method gets the room display name from RoomInfoPage
 	 * @return room display name
@@ -123,7 +141,7 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 	public String getRoomDisplayName() {
 		return roomDisplayNameTxtBox.getAttribute("value");
 	}
-	
+
 	/**
 	 * [RB] THis method verify default values of room
 	 * @param newdisplayname
@@ -134,7 +152,7 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 		String capacity = getRoomCapacity();
 		String code = getRoomCode();
 		String displayname = getRoomDisplayName();
-		
+
 		if (displayname.equals(newdisplayname) && capacity.equals("")
 				&& code.equals("")){
 			return true;
@@ -172,5 +190,34 @@ public class RoomInfoPage extends RoomBaseAbstractPage{
 	public RoomInfoPage clickDisableIcon() {
 		disableIcon.click();
 		return this;
+	}
+
+	/**
+	 * [RB]This method enables a room 
+	 * @return
+	 */
+	public RoomInfoPage clickEnableIcon() {
+		enableIcon.click();
+		return this;
+	}
+
+	/**
+	 * [YA] This method clicks Save button when an error message is expected and 
+	 * it should stay in the same page
+	 * @param errorMessage
+	 * @return
+	 */
+	public RoomInfoPage clickSaveWithErrorBtn() {
+		saveBtn.click();
+		wait.until(ExpectedConditions.visibilityOf(errorMessageLbl));
+		return this;
+	}
+
+	/**
+	 * [RB]This method verify if a not matches message is displayed
+	 * @return no matches message for location
+	 */
+	public boolean isNoMatchFoundMessage() {
+		return UIMethods.isElementPresent(By.xpath("//li[@class='select2-no-results']"));
 	}
 }

@@ -1,0 +1,25 @@
+<suite name = "ConferenceRoomResourceAssociations_Test_Suite">
+	<listeners>
+         <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name = "framework.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name = "RoomManager">
+        <classes>
+            <class name = "tests.admin.conferenceRoomResourceAssociations.StartTestSuiteRoomResourcesAsociations" />
+			<!--TC05-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.AllResourcesCreatedAreDisplayedInAvailableGridOfResourceAssociationsPage" />
+			<!--TC02-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.AResourceCanBeAssociatedToARoomEnabled" />
+			<!--TC04-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.ADeletedResourceIsRemovedFromAvailableGridInARoom" />
+			<!--TC01-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.ADeletedResourceIsRemovedFromResourcesAssociatedInARoom" />
+			<!--TC03-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.ResourcesAssociatedToARoomEnabledCanBeRemoved" />
+			<!--TC06-->
+			<class name = "tests.admin.conferenceRoomResourceAssociations.ResourcesQuantityCanBeModifyWhenItIsAssociatedToARoom" />
+        </classes>
+    </test>
+</suite>

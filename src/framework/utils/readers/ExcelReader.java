@@ -9,6 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 import jxl.Sheet;
 import jxl.Workbook;
 import jxl.read.biff.BiffException;
@@ -20,19 +23,21 @@ import jxl.read.biff.BiffException;
  */
 public class ExcelReader {
 	private Workbook workBook;
-
+	Logger log = Logger.getLogger(getClass());
+	
 	/**
 	 * This method sets the path when the file is available
 	 * @param path
 	 */
 	public ExcelReader(String path) {
 		try {
+			PropertyConfigurator.configure("log4j.properties");
+			log.info("Set the path of excel file - > " + path);
 			workBook = Workbook.getWorkbook(new File(System.getProperty("user.dir") + EXCEL_PATH + path));
 		} catch (BiffException | IOException e) {
-			e.printStackTrace();
+			log.error("The path specified is incorrect.", e);
 		}
 	}
-
 
 	/**
 	 * This method reads a excel file

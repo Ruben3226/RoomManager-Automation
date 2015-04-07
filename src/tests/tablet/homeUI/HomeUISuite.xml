@@ -1,0 +1,38 @@
+<suite name = "HomePageSuite">
+<listeners>
+      <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+      <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+      <listener class-name = "framework.utils.ReportNGListener"/>
+      <listener class-name = "tests.tablet.homeUI.StartSuite"/>
+</listeners>
+     
+    <test name = "HomePage">         
+       <classes>   
+          <!--TC21-->
+		  <class name = "tests.tablet.homeUI.SchedulePageIsDisplayedWhenNowTapeIsClicked"/>
+		  <!--TC12, TC13--> 
+		  <class name = "tests.tablet.homeUI.TheOrganizerAndTittleOfTheNextMeetingIsDisplayedInTheNextTile"/>
+		  <!--TC34-->
+		  <class name = "tests.tablet.homeUI.TheRedLineInTheTimelineIsInTheCurrentTime"/>			
+          <!---TC20, TC22, TC23, TC24 -->
+          <class name = "tests.tablet.homeUI.NavigationFromHomePage"/>
+          <!---TC27, TC28, TC33, TC19, TC29, TC17, TC05 -->
+          <class name = "tests.tablet.homeUI.HomePageInformation"/>
+          <!---TC01, TC02, TC31, TC30, TC18, TC07 -->
+          <class name = "tests.tablet.homeUI.CurrentMeetingValuesVerifications"/>
+          <!---TC06, TC03, TC32 -->
+          <class name = "tests.tablet.homeUI.NextMeetingValuesVerifications"/>
+          <!---TC16 -->
+          <class name = "tests.tablet.homeUI.NextMeetingInformationIsDeletedWhenItIsRemoved"/>
+          <!---TC14 -->
+          <class name = "tests.tablet.homeUI.UpdateOfNextMeetingSubjetWhenItIsChanged"/>
+          <!---TC04 -->
+          <class name = "tests.tablet.homeUI.TimeLeftUntilNextMeetingWhenRoomIsBussy"/>
+          <!---Data driven now tile-->
+          <class name = "tests.tablet.homeUI.MeetingSubjectIsCorrectlyDisplayedInNowTile"/>
+          <!---Data driven next tile-->
+          <class name = "tests.tablet.homeUI.MeetingSubjectIsCorrectlyDisplayedInNextTile"/> 
+       </classes>
+     </test>  
+      
+</suite>

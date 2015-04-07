@@ -5,13 +5,16 @@ import static framework.common.MessageConstants.MEETING_ATTENDEES_INVALID;
 import static framework.common.MessageConstants.MEETING_ATTENDEES_REQUIRED;
 import static framework.common.MessageConstants.MEETING_CREATED;
 import static framework.common.MessageConstants.MEETING_ERROR;
+import static framework.common.MessageConstants.MEETING_CREATE_ERROR;
+import static framework.common.MessageConstants.MEETING_UPDATE_ERROR;
 import static framework.common.MessageConstants.MEETING_ORGANIZER_REQUIRED;
 import static framework.common.MessageConstants.MEETING_REMOVED;
 import static framework.common.MessageConstants.MEETING_SUBJECT_REQUIERED;
 import static framework.common.MessageConstants.MEETING_TIME_STARTEND;
 import static framework.common.MessageConstants.MEETING_UPDATED;
-import static framework.common.MessageConstants.MEETING_PAST_CREATED_ERROR;
+import static framework.common.MessageConstants.MEETING_PAST_CREATED_INFORMATION;
 import static framework.utils.TimeManager.getTimeElement;
+import static framework.common.UIMethods.doubleClick;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -96,15 +99,21 @@ public class SchedulePage {
 
 	@FindBy(xpath = "//button/span[contains(text(),'Cancel')]")
 	WebElement cancelBtn;
-	
+
 	@FindBy(xpath = "//div[@class='item range meeting']")
 	WebElement itemRangeMeeting;
-	
+
 	@FindBy(xpath = "//div[@class='vispanel center']")
 	WebElement timeLine;
-	
+
 	@FindBy(css = "div.Modal-holder.ng-scope")
 	WebElement mask;
+
+	@FindBy(xpath = "//div[@id='toast-container']")
+	WebElement messagePopUp;
+
+	@FindBy(xpath = "//div[@class='foreground']")
+	WebElement timeLineGroup;
 
 	/**
 	 * [AC] Get the driver and the wait to use that in this class
@@ -149,7 +158,7 @@ public class SchedulePage {
 		attendeesTxtBox.sendKeys(Keys.ENTER);
 		return this;
 	}
-	
+
 	/**
 	 * [AC] Clear the content of the textBox, set the new value and press semicolon
 	 * to the attendee value
@@ -222,12 +231,9 @@ public class SchedulePage {
 	public SchedulePage setStartTimeDate(String startTime) {
 		String from = getTimeElement(startTime, "hourMin");
 		String fromMeridian = getTimeElement(startTime, "meridian");		
-		if(BROWSER.equalsIgnoreCase("ie")) {
+		if(BROWSER.equalsIgnoreCase("ie")||BROWSER.equalsIgnoreCase("firefox")) {
 			startTimeTxtBox.clear();
 			startTimeTxtBox.sendKeys(startTime);			
-		} else if (BROWSER.equalsIgnoreCase("firefox")) {
-			startTimeTxtBox.clear();
-			startTimeTxtBox.sendKeys(startTime);
 		} else {
 			setStartTime(from, fromMeridian);
 		}
@@ -289,10 +295,10 @@ public class SchedulePage {
 	 * [AC] This method clicks on back button
 	 * @return HomePage
 	 */
-	public HomePage clickBackBtn() {
+	public HomeTabletPage clickBackBtn() {
 		wait.until(ExpectedConditions.elementToBeClickable(backBtn));
 		backBtn.click();
-		return new HomePage();
+		return new HomeTabletPage();
 	}
 
 	/**
@@ -431,15 +437,31 @@ public class SchedulePage {
 	 * [AC] This method gets the error message when something bad happens
 	 * @return boolean
 	 */
-	public boolean isMessageOfErrorDisplayed() {
+	public boolean isMessageErrorPopUpDisplayed() {
 		return findMessagePopUpValue(MEETING_ERROR);
+	}
+
+	/**
+	 * [AC] This method gets the error message when occur an error creating meetings
+	 * @return
+	 */
+	public boolean isMessageErrorCreationMeetingPopUpDisplayed() {
+		return findMessagePopUpValue(MEETING_CREATE_ERROR);
+	}
+
+	/**
+	 * [AC] This method gets the error message when occur an error updating meetings
+	 * @return
+	 */
+	public boolean isMessageErrorUpdateMeetingPopUpDisplayed() {
+		return findMessagePopUpValue(MEETING_UPDATE_ERROR);
 	}
 
 	/**
 	 * [AC] This method gets the error label when does not put a subject
 	 * @return boolean
 	 */
-	public boolean isErrorSubjectDisplayed() {
+	public boolean isErrorSubjectLblDisplayed() {
 		return getAnyErrorMessageLbl(MEETING_SUBJECT_REQUIERED);
 	}
 
@@ -447,7 +469,7 @@ public class SchedulePage {
 	 * [AC] This method gets the error label when does not put a organizer
 	 * @return boolean
 	 */
-	public boolean isErrorOrganizerDisplayed() {
+	public boolean isErrorOrganizerLblDisplayed() {
 		return getAnyErrorMessageLbl(MEETING_ORGANIZER_REQUIRED);
 	}
 
@@ -497,7 +519,8 @@ public class SchedulePage {
 	public SchedulePage clickOkButton() {
 		okBtn.click();
 		okBtn.sendKeys(Keys.ESCAPE);
-		UIMethods.waitForMaskDisappearsAndClickElement(timeLine);
+		wait.until(ExpectedConditions.visibilityOf(messagePopUp));
+		UIMethods.waitForMaskDisappears(timeLine);
 		return this;
 	}
 
@@ -508,12 +531,12 @@ public class SchedulePage {
 	public SchedulePage clickCancelButton() {
 		cancelBtn.click();
 		cancelBtn.sendKeys(Keys.ESCAPE);
-		UIMethods.waitForMaskDisappearsAndClickElement(timeLine);
+		UIMethods.waitForMaskDisappears(timeLine);
 		return this;
 	}
 
 	/**
-	 * [EN] This method confirm the credentials inserted by the user
+	 * [EN] This method confirms the credentials inserted by the user.
 	 * @param name
 	 * @param password
 	 * @return SchedulePage
@@ -540,26 +563,66 @@ public class SchedulePage {
 	}
 
 	/**
-	 * [EN] This method setting the values to created a meeting.
+	 * [YA] This method sets required information for the creation of a meeting
+	 * @param organizer
+	 * @param subject
+	 * @param startTime
+	 * @param endTime
+	 * @param attendees
+	 * @return SchedulePage
+	 */
+	public SchedulePage setMeetingInformation(String organizer, String subject, String startTime, 
+			String endTime, String attendees) {
+		setOrganizerTxtBox(organizer);
+		setSubjectTxtBox(subject);
+		setStartTimeDate(startTime);
+		setEndTimeDate(endTime);
+		setAttendeeTxtBoxPressingEnter(attendees);
+		return this;
+	}
+
+	/**
+	 * [EN] Created a meeting with all values (required and optional).
 	 * @param organizer
 	 * @param subject
 	 * @param startTime hh:mm a
 	 * @param endTime  hh:mm a
 	 * @param attendees
 	 * @param bodyMeeting
-	 * @return
+	 * @return SchedulePage
 	 */
 	public SchedulePage createMeeting(String organizer, String subject, String startTime, 
-			String endTime, String attendees, String bodyMeeting) {
-		setOrganizerTxtBox(organizer);
-		setSubjectTxtBox(subject);
-		setStartTimeDate(startTime);
-		setEndTimeDate(endTime);
-		setAttendeeTxtBoxPressingEnter(attendees);
+			String endTime, String attendees, String bodyMeeting, String password) {
+
+		setMeetingInformation(organizer, subject, startTime, endTime, attendees);	
 		setBodyTxtBox(bodyMeeting);
-		return clickCreateBtn();
+		clickCreateBtn();
+		confirmCredentials(password);
+		wait.until(ExpectedConditions.visibilityOf(messagePopUp));
+		return this;
 	}
-	
+
+	/**
+	 * [YA]This method creates a meeting with required information adding minutes to current time
+	 * @param organizer
+	 * @param subject
+	 * @param starTimeMinutes
+	 * @param endTimeMinutes
+	 * @param attendee
+	 * @param password
+	 * @return SchedulePage
+	 */
+	public SchedulePage createMeeting(String organizer, String subject, String starTimeMinutes,
+			String endTimeMinutes, String attendees, String password) {
+		String startTime = TimeManager.getTime(Integer.parseInt(starTimeMinutes), "hh:mm a");
+		String endTime = TimeManager.getTime(Integer.parseInt(endTimeMinutes), "hh:mm a");
+		setMeetingInformation(organizer, subject, startTime, endTime, attendees);
+		clickCreateBtn();
+		confirmCredentials(password);
+		wait.until(ExpectedConditions.visibilityOf(messagePopUp));
+		return this;
+	}
+
 	/**
 	 * [JC] This method verify if the label scheduler is displayed
 	 * @return boolean
@@ -574,10 +637,10 @@ public class SchedulePage {
 	 */
 	public String getTimeLineDate() {
 		String time = currentTimeLine.getAttribute("title").replace("th","").replace("st","")
-				.replace("nd","").replace("Current time: ","");
+				.replace("nd","").replace("rd","").replace("Current time: ","");
 		return time;
 	}
-	
+
 	/**
 	 * [AC] This method clicks over TimeLine
 	 * @return SchedulePage
@@ -586,7 +649,7 @@ public class SchedulePage {
 		timeLine.click();
 		return this;
 	}
-	
+
 	/**
 	 * [YA]This method verifies if Meeting Box is present
 	 * @param nameMeeting
@@ -607,39 +670,15 @@ public class SchedulePage {
 	}
 
 	/**
-	 * [YA]This method creates a meeting with required information adding minutes to current time
-	 * @param organizer
-	 * @param subject
-	 * @param starTimeMinutes
-	 * @param endTimeMinutes
-	 * @param attendee
-	 * @param password
-	 * @return SchedulePage
-	 */
-	public SchedulePage createMeetingRequiredInformation(String organizer, String subject, String starTimeMinutes,
-			String endTimeMinutes, String attendee, String password) {
-		String startTime = TimeManager.getTime(Integer.parseInt(starTimeMinutes), "hh:mm a");
-		String endTime = TimeManager.getTime(Integer.parseInt(endTimeMinutes), "hh:mm a");
-		setOrganizerTxtBox(organizer);
-		setSubjectTxtBox(subject);
-		setStartTimeDate(startTime);
-		setEndTimeDate(endTime);
-		setAttendeeTxtBoxPressingEnter(attendee);	
-		clickCreateBtn();
-		confirmCredentials(password).isMessageMeetingCreatedDisplayed();
-		return this;
-	}
-
-	/**
 	 * [YA]This method verifies if UpdateBtn is present
 	 * @return boolean
 	 */
 	public boolean isUpdateBtnPresent() {
 		return updateBtn.isDisplayed();
 	} 
-	
+
 	/**
-	 * [AC] This method delete a meeting
+	 * [AC] This method deletes a meeting
 	 * @param nameMeeting
 	 * @return  SchedulePage
 	 */
@@ -652,41 +691,15 @@ public class SchedulePage {
 	}
 
 	/**
-	 * [EN] Overload of createMetting method, where body meeting is optional.
-	 * @param organizer
-	 * @param subject
-	 * @param minutesFrom minutes number to add/subtract of current time to set in {From} text box.
-	 * @param minutesTo minutes number to add/subtract of current time to set in {To} text box.
-	 * @param attendee
-	 * @param password
-	 * @return  SchedulePage
-	 */
-	public SchedulePage createMeeting(String organizer, String subject, int minutesFrom, 
-			int minutesTo, String attendee, String password) {
-
-		String startTime = TimeManager.getTime(minutesFrom, "hh:mm a");
-		String endTime = TimeManager.getTime(minutesTo, "hh:mm a");
-
-		setOrganizerTxtBox(organizer);
-		setSubjectTxtBox(subject);
-		setStartTimeDate(startTime);
-		setEndTimeDate(endTime);
-		setAttendeeTxtBoxPressingEnter(attendee);
-		clickCreateBtn();	
-		confirmCredentials(password);
-		isMessageMeetingCreatedDisplayed();
-		return this;
-	}
-
-	/**
-	 * [EN] This method checks that a error message is displayed 
+	 * [EN] This method checks that an information message is displayed 
 	 * when a meeting is created with past time values.
 	 * @return boolean
 	 */
-	public boolean isErrorMessageOfPastMeetingDisplayed() {
-		return getAnyErrorMessageLbl(MEETING_PAST_CREATED_ERROR);
+	public boolean isMessageInformationOfPastMeetingDisplayed() {
+		return UIMethods.isElementPresent(By.xpath("//small[contains(text(),'" 
+				+ MEETING_PAST_CREATED_INFORMATION + "')]"));
 	}
-	
+
 	/**
 	 * [AC] This method gets the default duration of a meeting
 	 * @return int
@@ -733,9 +746,9 @@ public class SchedulePage {
 	 * @param nameMeeting
 	 * @return SchedulePage
 	 */
-	public SchedulePage moveMeeting(String nameMeeting, int value) {
+	public SchedulePage moveMeeting(int value) {
 		Actions builder = new Actions(driver);
-		WebElement elem = driver.findElement(By.xpath("//span[contains(text(),'" + nameMeeting + "')]"));
+		WebElement elem = driver.findElement(By.xpath("//div[contains(@class,'item range meeting selected')]"));
 		builder.clickAndHold(elem)
 		.moveByOffset(value, 0)
 		.release().perform();
@@ -771,6 +784,80 @@ public class SchedulePage {
 		builder.clickAndHold(elem)
 		.moveByOffset(800, 0)
 		.release().perform();
+		return this;
+	}
+
+	/**
+	 * [EN]Gets the text hour (separated by 1 hour) displayed in the bottom of time line.
+	 * @param textMinorTime
+	 * @return true if is displayed otherwise false.
+	 */
+	public boolean isTextHourDisplayed(String textMinorTime) {
+		return driver.findElement(By.xpath("//div[contains(text(),'" + textMinorTime + "')]"))
+				.isDisplayed();
+	}
+
+	/**
+	 * [AC] This method waits until the message PopUp appears
+	 * @return
+	 */
+	public boolean waitForMessagePopUp() {
+		wait.until(ExpectedConditions.visibilityOf(messagePopUp));
+		return messagePopUp.isDisplayed();
+	}
+
+	/**
+	 * [EN] This method does double click over time line group.
+	 */
+	public void doubleClickTimeLineGroup() {
+		clickOverTimeline();
+		doubleClick(timeLineGroup);
+	}
+
+	/**
+	 * [EN] This method checks that the item range meeting is displayed in the time line.
+	 * @return boolean
+	 */
+	public boolean isItemRangeMeetingDisplayed() {
+		return itemRangeMeeting.isDisplayed();
+	}
+
+	/**
+	 * [EN] This method checks that the item range meeting is displayed in the time line.
+	 * @return boolean
+	 */
+	public SchedulePage clickItemRangeMeeting() {
+		itemRangeMeeting.click();
+		return this;
+	}
+
+	/**
+	 * [YA]This method clicks over an Out Of Order
+	 * @param outOfOrderTitle
+	 * @return SchedulePage
+	 */
+	public SchedulePage clickOverOutOfOrder(String outOfOrderTitle) {
+		moveTimelineAccordingToCurrentTime();
+		WebElement outOfOrderBox = driver.findElement(By.xpath("//span[contains(text(),'" 
+				+ outOfOrderTitle + "')]//ancestor::div[@class='item range out-of-order']"));
+		wait.until(ExpectedConditions.elementToBeClickable(outOfOrderBox));
+		outOfOrderBox.click();
+		return this;
+	}
+	
+	/**
+	 * [YA]This method moves the timeLine According to current time
+	 * @return SchedulePage
+	 */
+	public SchedulePage moveTimelineAccordingToCurrentTime() {
+		String currentHour = TimeManager.getCurrentDate("HH");
+		int value = 0;
+		if (Integer.parseInt(currentHour) <= 7) {
+			value = 5000;
+		} else if (Integer.parseInt(currentHour) >= 18) {
+			value = -5000;
+		}
+		moveTimeLine(value);
 		return this;
 	}
 }

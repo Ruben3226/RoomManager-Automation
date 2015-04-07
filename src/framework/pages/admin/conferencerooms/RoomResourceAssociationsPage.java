@@ -1,6 +1,7 @@
 package framework.pages.admin.conferencerooms;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import framework.common.UIMethods;
 
@@ -64,8 +65,8 @@ public class RoomResourceAssociationsPage extends RoomBaseAbstractPage {
 	 * @return
 	 */
 	public boolean searchResourcequantity(String resourceName) {
-		return driver.findElement(By.xpath("//span[contains(text(),'" + resourceName + 
-				"')]/ancestor::div/following-sibling::div/input")).isDisplayed();
+		return UIMethods.isElementPresent(By.xpath("//span[contains(text(),'" + resourceName + 
+				"')]/ancestor::div/following-sibling::div/input"));
 	}
 
 	/**
@@ -108,5 +109,17 @@ public class RoomResourceAssociationsPage extends RoomBaseAbstractPage {
 	public boolean verifyChanges(String resourceName) {
 		return UIMethods.isElementPresent(By.xpath("//div[@class='list-group-item text-center col-xs-12 ng-scope']"
 				+ "//span[contains(text(),'"+resourceName+"')]"));
+	}
+	
+	/**
+	 * [YA] This method clicks Save button when an error message is expected and 
+	 * it should stay in the same page
+	 * @param errorMessage
+	 * @return
+	 */
+	public RoomResourceAssociationsPage clickSaveWithErrorBtn() {
+		saveBtn.click();
+		wait.until(ExpectedConditions.visibilityOf(errorMessageLbl));
+		return this;
 	}
 }

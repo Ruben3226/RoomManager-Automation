@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
 import framework.selenium.SeleniumDriverManager;
 
 /**
@@ -11,9 +12,9 @@ import framework.selenium.SeleniumDriverManager;
  *
  */
 public class ResourceDeletePage extends ResourceBaseAbstractPage {
+	
 	@FindBy(css = "button.info")
 	WebElement confirmRemoveBtn;
-
 
 	public ResourceDeletePage() {		
 		driver = SeleniumDriverManager.getManager().getDriver();

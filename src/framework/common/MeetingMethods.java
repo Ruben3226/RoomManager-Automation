@@ -1,44 +1,28 @@
 package framework.common;
 
-import static framework.common.AppConfigConstants.EXCEL_INPUT_DATA;
-
-import java.util.List;
-import java.util.Map;
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
-import framework.pages.admin.LoginPage;
-import framework.pages.tablet.HomePage;
+import framework.pages.admin.HomeAdminPage;
+import framework.pages.tablet.HomeTabletPage;
 import framework.pages.tablet.SchedulePage;
-import framework.pages.tablet.SettingsPage;
 import framework.selenium.SeleniumDriverManager;
-import framework.utils.TimeManager;
-import framework.utils.readers.ExcelReader;
 
+/**
+ * This class contains the methods to manage meetings, and to creates Out Of Order
+ * @author Asael Calizaya
+ *
+ */
 public class MeetingMethods {
-	ExcelReader excelReader;
-	List<Map<String, String>> meetingData; 
-	SchedulePage schedule;
 	WebDriver driver;
-	HomePage home;
-	SettingsPage settings;
+	HomeTabletPage home;
 
 	/**
-	 * [AC] This method initializes the listMaps to read from the excel
+	 * [AC] This method initialize the driver
 	 */
 	public MeetingMethods() {
 		driver = SeleniumDriverManager.getManager().getDriver();
 		PageFactory.initElements(driver, this);
-		home = new HomePage();	
-		schedule = new SchedulePage();
-		try {
-			excelReader = new ExcelReader(EXCEL_INPUT_DATA);
-		} catch (Exception e) {
-			System.out.println("Error on Preconditions: " + e.getMessage());
-			e.printStackTrace();
-		}
-		meetingData = excelReader.getMapValues("MeetingData");
 	}	
 
 	/**
@@ -51,44 +35,13 @@ public class MeetingMethods {
 	 * @param body
 	 * @param password
 	 */
-	public void createMeetingWithAllDataFromExcel(String organizer, String subject, String startTime, String endTime,
-			String attendee, String body, String password) {
-		HomePage home = new HomePage();
+	public void createMeetingFromHome(String organizer, String subject, String startTime, 
+			String endTime, String attendee, String body, String password) {
+		SchedulePage schedule = new SchedulePage();
+		home = new HomeTabletPage();
 		home.clickScheduleBtn()
-		.setOrganizerTxtBox(organizer)
-		.setSubjectTxtBox(subject)
-		.setStartTimeDate(startTime)
-		.setEndTimeDate(endTime)
-		.setAttendeeTxtBoxPressingEnter(attendee)
-		.setBodyTxtBox(body)
-		.clickCreateBtn()
-		.confirmCredentials(password)
-		.isMessageMeetingCreatedDisplayed();
-	}
-
-	/**
-	 * [AC] This method creates more than one meetings, depends of the data in the excel file 
-	 * @param amountOfMeetings
-	 * @return: All name of meetings created on this method
-	 */
-	public String[] createMeetingsSuccessfully(int amountOfMeetings) {
-		String[] subject = new String[amountOfMeetings];
-		home.clickScheduleBtn();
-		for (int i = 0; i < amountOfMeetings; i++) {
-			String organizer = meetingData.get(i).get("Organizer");
-			subject[i] = meetingData.get(i).get("Subject");
-			String startTime = meetingData.get(i).get("Start time");
-			String endTime = meetingData.get(i).get("End time");
-			String attendee = meetingData.get(i).get("Attendee");
-			String body = meetingData.get(i).get("Body");
-			String password = meetingData.get(i).get("Password");
-			schedule
-			.createMeeting(organizer, subject[i], startTime, endTime, attendee, body)		
-			.confirmCredentials(password)
-			.isMessageMeetingCreatedDisplayed();
-		}
+		.createMeeting(organizer, subject, startTime, endTime, attendee, body, password);
 		schedule.clickBackBtn();
-		return subject;
 	}
 
 	/**
@@ -101,54 +54,34 @@ public class MeetingMethods {
 	 * @param body: Meeting's body message
 	 * @param password: Organizer's password
 	 */
-	public void createMeeting(String organizer, String subject, String starTimeMinutes,
-			String endTimeMinutes, String attendee, String body, String password) {
-
-		String startTime = TimeManager.getTime(Integer.parseInt(starTimeMinutes), "hh:mm a");
-		String endTime = TimeManager.getTime(Integer.parseInt(endTimeMinutes), "hh:mm a");
+	public SchedulePage createMeeting(String organizer, String subject, String starTimeMinutes,
+			String endTimeMinutes, String attendees, String body, String password) {
+		home = new HomeTabletPage();
 		home.clickScheduleBtn()
-		.createMeeting(organizer, subject, startTime, endTime, attendee, body)		
-		.confirmCredentials(password).isMessageMeetingCreatedDisplayed();
-	}
-
-	/**
-	 * [AC] This class delete a meeting
-	 * @param nameMeeting
-	 * @return SchedulePage
-	 */
-	public SchedulePage deleteMeeting(String nameMeeting, String password) {
-		home.clickScheduleBtn()
-		.deleteMeeting(nameMeeting, password);
+		.createMeeting(organizer, subject, starTimeMinutes, endTimeMinutes, 
+				attendees, password);	
 		return new SchedulePage();
 	}
 
-	public void goHome() {
-		schedule.clickBackBtn();
-	}
-
 	/**
-	 * [YA] This method sets the url for tablet home and choose an specific room
+	 * [AC] This method creates an Out Of Order
+	 * @param startDate
+	 * @param endDate
+	 * @param startTime
+	 * @param endTime
+	 * @param title
+	 * @param description
 	 * @param roomName
-	 * @return
 	 */
-	public HomePage getHomeForSpecificRoom(String roomName) {
-		home.getHome();
-		if(home.isTimelineContainerPresent()) {
-			home.clickSettingsBtn();
-		}
-		settings.selectRoom(roomName);
-		return new HomePage();
-	}
-	
 	public void createAnOutOfOrder(String startDate, String endDate, String startTime, 
 			String endTime, String title, String description, String roomName) {
-		LoginPage login = new LoginPage();
-		login.clickSigninLink()
-		.clickConferenceRoomsLink()
+		HomeAdminPage homePage = new HomeAdminPage();
+		homePage.clickConferenceRoomsLink()
 		.doubleClickOverRoomName(roomName)
 		.clickOutOfOrderPlanningLink()
 		.setOutOfOrderPeriodInformation(startDate, endDate, startTime, 
 				endTime, title, description)
-		.clickSaveBtn();
+				.activateOutOfOrder()
+				.clickSaveBtn();
 	}
 }

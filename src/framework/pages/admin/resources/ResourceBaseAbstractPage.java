@@ -1,5 +1,9 @@
 package framework.pages.admin.resources;
 
+import static framework.common.MessageConstants.RESOURCE_DISPLAY_NAME_TEXTBOX_EMPTY;
+import static framework.common.MessageConstants.RESOURCE_NAME_DUPLICATED;
+import static framework.common.MessageConstants.RESOURCE_NAME_TEXTBOX_EMPTY;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -9,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import framework.common.UIMethods;
+import framework.pages.admin.conferencerooms.RoomBaseAbstractPage;
 import framework.selenium.SeleniumDriverManager;
 
 /**
@@ -25,10 +30,10 @@ public class ResourceBaseAbstractPage {
 	@FindBy(xpath = "//div[@class='input-control text']/input[@ng-model='resource.customName']") 
 	WebElement resourceDisplayNameTxtBox;
 	
-	@FindBy(xpath = "//button[@ng-click='save()']") 
+	@FindBy(xpath = "//span[contains(text(),'Save')and@class='ng-binding']") 
 	WebElement saveResourceBtn;
 	
-	@FindBy(xpath = "//button[@ng-click='cancel()']") 
+	@FindBy(xpath = "//span[contains(text(),'Cancel')and@class='ng-binding']") 
 	WebElement cancelBtn;
 	
 	@FindBy(xpath = "//div[@class='input-control text']/textarea[@ng-model='resource.description']") 
@@ -36,6 +41,13 @@ public class ResourceBaseAbstractPage {
 	
 	@FindBy(id = "convert") 
 	WebElement resourceOpenIconBtn;
+	
+	@FindBy(xpath = "//div[@class = 'row v-space ng-scope']")
+	WebElement background;	
+
+	
+	@FindBy(linkText = "Resource Associations") 
+	WebElement resourceAssociationsLink;
 	
 	public ResourceBaseAbstractPage() {		
 		driver = SeleniumDriverManager.getManager().getDriver();
@@ -48,11 +60,11 @@ public class ResourceBaseAbstractPage {
 	 * @param resourceName
 	 * @return
 	 */
-	public ResourceInfoPage setResourceName(String resourceName) {
+	public ResourceBaseAbstractPage setResourceName(String resourceName) {
 		wait.until(ExpectedConditions.visibilityOf(resourceNameTxtBox));
 		resourceNameTxtBox.clear();
 		resourceNameTxtBox.sendKeys(resourceName);
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
@@ -61,10 +73,10 @@ public class ResourceBaseAbstractPage {
 	 * @param resourceDisplayName
 	 * @return the current page
 	 */
-	public ResourceInfoPage setResourceDisplayName(String resourceDisplayName) {
+	public ResourceBaseAbstractPage setResourceDisplayName(String resourceDisplayName) {
 		resourceDisplayNameTxtBox.clear();
 		resourceDisplayNameTxtBox.sendKeys(resourceDisplayName);
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
@@ -73,10 +85,10 @@ public class ResourceBaseAbstractPage {
 	 * @param resourceDescription
 	 * @return the current page
 	 */
-	public ResourceInfoPage setResourceDescription(String resourceDescription) {
+	public ResourceBaseAbstractPage setResourceDescription(String resourceDescription) {
 		resourceDescriptionTxtBox.clear();
 		resourceDescriptionTxtBox.sendKeys(resourceDescription);
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
@@ -84,11 +96,11 @@ public class ResourceBaseAbstractPage {
 	 * @param iconTitle
 	 * @return the current page
 	 */
-	public ResourceInfoPage selectResourceIcon(String iconTitle) {
+	public ResourceBaseAbstractPage selectResourceIcon(String iconTitle) {
 		By icon = By.xpath("//button[@value='" + iconTitle +"']"); 
 		wait.until(ExpectedConditions.elementToBeClickable(icon));
 		driver.findElement(icon).click();
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
@@ -97,20 +109,20 @@ public class ResourceBaseAbstractPage {
 	 * @param direction
 	 * @return
 	 */
-	public ResourceInfoPage clickPreviusNextIconPageBtn(String direction) {
+	public ResourceBaseAbstractPage clickPreviusNextIconPageBtn(String direction) {
 		By iconButton = By.xpath("//button[@class='btn btn-primary btn-" + direction + "']");
 		driver.findElement(iconButton).click();
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
 	 * [ML]This method click on found icon from selectResourceIcon method
 	 * @return
 	 */
-	public ResourceInfoPage clickResourceIcon() {
+	public ResourceBaseAbstractPage clickResourceIcon() {
 		wait.until(ExpectedConditions.elementToBeClickable(resourceOpenIconBtn));
 		resourceOpenIconBtn.click();
-		return new ResourceInfoPage();
+		return this;
 	}
 	
 	/**
@@ -119,6 +131,7 @@ public class ResourceBaseAbstractPage {
 	 */
 	public ResourcesPage clickSaveResourceBtn() {
 		saveResourceBtn.click();
+		UIMethods.waitForMaskDisappears(background);
 		return new ResourcesPage();
 	}
 	
@@ -133,12 +146,15 @@ public class ResourceBaseAbstractPage {
 		return UIMethods.isElementPresent(resourceIcon);
 	}
 	
+	
+	
 	/**
 	 * [CG]This method click on cancel button.
 	 * @return
 	 */
 	public ResourcesPage clickCancelResourceBtn() {
 		cancelBtn.click();
+		UIMethods.waitForMaskDisappears(background);
 		return new ResourcesPage();
 	}
 	
@@ -153,12 +169,76 @@ public class ResourceBaseAbstractPage {
 	}
 	
 	/**
-	 * This method cleans resource display name field in resource info page
+	 * [CG]This method cleans resource display name field in resource info page
 	 * @return
 	 */
 	public ResourceInfoPage clearResourceDisplayName() {
 		wait.until(ExpectedConditions.visibilityOf(resourceDisplayNameTxtBox));
-		resourceDisplayNameTxtBox.clear();
+		resourceDisplayNameTxtBox.clear();		
 		return new ResourceInfoPage();
+	}
+	
+	/**
+	 * [CG]Method that returns true if an error message is displayed 
+	 * @param message
+	 * @return
+	 */
+	public boolean verifyErrorMessage(String message) {
+		return RoomBaseAbstractPage.isErrorMessageCorrect(message);
+	}
+	
+	/**
+	 * [CG]This method click on save button if a resource exists already.
+	 * @return
+	 */
+	public ResourceBaseAbstractPage clickSaveResourceWithErrorBtn() {
+		saveResourceBtn.click();
+		return this;
 	}	
+
+
+	/**
+	 * [ML]Click in resourceAssociationLink
+	 * @return ResourceAssociationPage
+	 */
+	public ResourceAssociationsPage clickResourceAssociationLink() {
+		resourceAssociationsLink.click();
+		return new ResourceAssociationsPage();
+	}
+	
+	/**
+	 * [CG]This method verifies if an error message is correct
+	 * @return boolean
+	 */
+	public static boolean isErrorMessageCorrect(String errorMessage) {
+		return UIMethods.isElementPresent(By.xpath("//small[contains(text(),'" 
+				+ errorMessage + "')]"));
+	}
+	
+	/**
+	 * [CG]This method verifies that a message that says: "Cannot establish out of order as a past event"
+	 * is displayed
+	 * @return boolean
+	 */
+	public boolean isNameDuplicatedErrorDisplayed() {
+		return isErrorMessageCorrect(RESOURCE_NAME_DUPLICATED);
+	}
+	
+	/**
+	 * [CG]This method verifies that a message that says: "Cannot establish out of order as a past event"
+	 * is displayed
+	 * @return boolean
+	 */
+	public boolean isNameTxtBoxEmptyErrorDisplayed() {
+		return isErrorMessageCorrect(RESOURCE_NAME_TEXTBOX_EMPTY);
+	}
+	
+	/**
+	 * [CG]This method verifies that a message that says: "Cannot establish out of order as a past event"
+	 * is displayed
+	 * @return boolean
+	 */
+	public boolean isDisplayNameTxtBoxEmptyErrorDisplayed() {
+		return isErrorMessageCorrect(RESOURCE_DISPLAY_NAME_TEXTBOX_EMPTY);
+	}
 }

@@ -9,24 +9,22 @@ import framework.utils.readers.JsonReader;
  */
 public final class AppConfigConstants {
 	private static JsonReader value = new JsonReader();
-
-	public static final String BROWSER = value.readJsonFile("browser", "navigator");
-	public static final String URL_TABLET = value.readJsonFile("browser", "urlTablet");
-	public static final String URL_TABLET_HOME = value.readJsonFile("browser", "urlTabletHome");
-	public static final String URL_ADMIN = value.readJsonFile("browser", "urlAdmin");
-	public static final String URL_ADMIN_HOME = value.readJsonFile("browser", "urlAdminHome");
-	public static final String URL_REST = value.readJsonFile("browser", "urlRest");
-	public static final String CHROMEDRIVER_PATH = value.readJsonFile("confDriver", "chrome");
-	public static final String IEDRIVER_PATH = value.readJsonFile("confDriver", "ie");
+	private static String appconfigPath = "\\appconfig.json";
+	public static final String BROWSER = value.readJsonFile("browser", "navigator", appconfigPath);
+	public static final String URL_TABLET = value.readJsonFile("browser", "urlTablet", appconfigPath);
+	public static final String URL_ADMIN = value.readJsonFile("browser", "urlAdmin", appconfigPath);
+	public static final String URL_REST = value.readJsonFile("browser", "urlRest", appconfigPath);
+	public static final String CHROMEDRIVER_PATH = value.readJsonFile("confDriver", "chrome", appconfigPath);
+	public static final String IEDRIVER_PATH = value.readJsonFile("confDriver", "ie", appconfigPath);
 	public static final int IMPLICIT_WAIT = Integer.parseInt(value.readJsonFile("confDriver", 
-			"implicitWait"));
+			"implicitWait", appconfigPath));
 	public static final int EXPLICIT_WAIT = Integer.parseInt(value.readJsonFile("confDriver", 
-			"explicitWait"));
+			"explicitWait", appconfigPath));
 	public static final int WEBDRIVERWAIT_SLEEP = Integer.parseInt(value.readJsonFile("confDriver",
-			"webDriverWait_Sleep"));
-	public static final String EXCEL_PATH = value.readJsonFile("ExternalFile", "excelPath");
-	public static final String EXCEL_INPUT_DATA = value.readJsonFile("ExternalFile", "excelInputData");
-	public static final String EXCEL_DATA_PROVIDER = value.readJsonFile("ExternalFile", "dataProviderData");
-	public static final String ROOM_NAME = value.readJsonFile("RoomName","name");
-
+			"webDriverWait_Sleep", appconfigPath));
+	public static final String EXCEL_PATH = value.readJsonFile("ExternalFile", "excelPath", appconfigPath);
+	public static final String EXCEL_INPUT_DATA = value.readJsonFile("ExternalFile", "excelInputData", appconfigPath);
+	public static final String EXCEL_DATA_PROVIDER = value.readJsonFile("ExternalFile", "dataProviderData", appconfigPath);
+	public static final String RESOURCE1_PATH = "\\src\\tests\\Resource1.json";
+	public static final String ROOM1_PATH = "\\src\\tests\\Room1.json";
 }

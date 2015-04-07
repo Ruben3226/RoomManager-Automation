@@ -34,12 +34,15 @@ public abstract class RoomBaseAbstractPage {
 
 	@FindBy(xpath = "//button[@ng-click='cancel()']") 
 	WebElement cancelBtn;
-	
+
 	@FindBy(xpath = "//small[contains(text(),' ')]")
 	WebElement errorMessageLbl;
-	
+
 	@FindBy (xpath = "//div[@class='toast-message']/div")
 	WebElement messagePopUp;
+
+	@FindBy(xpath = "//div[@class = 'row v-space ng-scope']")
+	WebElement background;
 
 	public RoomBaseAbstractPage() {
 		driver = SeleniumDriverManager.getManager().getDriver();
@@ -53,49 +56,37 @@ public abstract class RoomBaseAbstractPage {
 	}
 
 	public RoomResourceAssociationsPage clickResourceAssociationsLink(){
+		wait.until(ExpectedConditions.visibilityOf(resourceAssociationsLink));
 		resourceAssociationsLink.click();
 		return new RoomResourceAssociationsPage();
 	}
 
 	public RoomOutOfOrderPlanningPage clickOutOfOrderPlanningLink(){
+		wait.until(ExpectedConditions.visibilityOf(outOfOrderPlanningLink));
 		outOfOrderPlanningLink.click();
 		return new RoomOutOfOrderPlanningPage();
 	}
 
 	public RoomsPage clickCancelBtn(){
 		cancelBtn.click();
+		UIMethods.waitForMaskDisappears(background);
+		return new RoomsPage();
+	}
+
+	public RoomsPage clickSaveBtn(){
+		saveBtn.click();
+		UIMethods.waitForMaskDisappears(background);
 		return new RoomsPage();
 	}
 	
-	public RoomsPage clickSaveBtn(){
-		saveBtn.click();
-		wait.until(ExpectedConditions.visibilityOf(messagePopUp));
-		if(messagePopUp.isDisplayed()){
-			messagePopUp.click();
-		}
-		return new RoomsPage();
-	}
-
-	/**
-	 * [YA] This method clicks Save button when an error message is expected and 
-	 * it should stay in the same page
-	 * @param errorMessage
-	 * @return
-	 */
-	public Object clickSaveWithErrorBtn(){
-		saveBtn.click();
-		wait.until(ExpectedConditions.visibilityOf(errorMessageLbl));
-		return this;
-	}
-
 	/**
 	 * [YA]This method verifies if any error message is displayed
-	 * @return
+	 * @return boolean
 	 */
 	public boolean isErrorMessagePresent() {
 		return errorMessageLbl.isDisplayed();
 	}
-	
+
 	/**
 	 * [YA]This method verifies if an error message is correct
 	 * @return boolean

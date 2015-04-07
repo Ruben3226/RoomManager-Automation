@@ -1,0 +1,25 @@
+<suite name = "Resources_Test_Suite">
+	<listeners>
+         <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name = "framework.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name = "RoomManager">
+        <classes>
+        	<class name = "tests.admin.resources.StartTestSuiteResources" />
+        		<!--TC18-->
+        		<class name = "tests.admin.resources.TotalItemsInformationLabelDisplaysResourcesQuantity" />
+				<!--TC21-->
+				<class name = "tests.admin.resources.SelectedItemsLblInformationDisplaysTheNumberOfCheckedResources" />						
+				<!--TC35-->
+				<class name = "tests.admin.resources.AnErrorMessageIsDisplayedWhenAResourceWithANameRegisteredIsAdded" />
+				<!--TC37-->
+				<class name = "tests.admin.resources.AnErrorMessageIsDisplayedWhenAResourceIsUpdatedWithANameAlreadyRegistered" />
+				<!--TC40, TC41-->
+				<class name = "tests.admin.resources.AnErrorMessageIsDisplayedWhenTextBoxesAreLeftEmptyInAddForm" />
+				<!--TC42, TC43-->
+				<class name = "tests.admin.resources.AnErrorMessageIsDisplayedWhenTextBoxesAreLeftEmptyInResourceInfoForm" />
+		</classes>
+    </test>
+</suite>

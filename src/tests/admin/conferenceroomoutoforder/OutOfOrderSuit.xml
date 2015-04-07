@@ -1,0 +1,49 @@
+<suite name="ConferenceRoomOutOfOrderSuite">
+ 	<listeners>
+      	<listener class-name="org.uncommons.reportng.HTMLReporter"/>
+      	<listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+      	<listener class-name="framework.utils.ReportNGListener"/>
+  	</listeners>
+ 	<test name = "ConferenceRoomOutOfOrderTests">
+		<classes>
+ 			<class name="tests.admin.conferenceroomoutoforder.StartTestConferenceRoomOutOfOrder" />
+ 			 <!--TC01, TC32-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsCreatedAndEnabled"/>
+ 			 <!--TC02-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.IfOfOutOfOrderIsCreatedItsInformationIsDisplayedInOutOfOrderPage"/>
+ 			 <!--TC04, TC16, TC17-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.IfOutOfOrderIsCreatedInTheFutureCalendarIconEnablesOrDisablesIt"/> 			 
+ 			 <!--TC05, TC18, TC19-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.IfOutOfOrderIsCreatedInThePresentClockIconEnablesOrDisablesIt"/>
+ 			 <!--TC07, TC08-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderCreatedIsDispayedInTabletTimeline"/>
+ 			 <!--TC10-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderCreatedInFutureTimeIsDisplayedInHomeNextTile"/>
+ 			 <!--TC11-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderCreatedInCurrentTimeIsDisplayedInHomeNowTile"/>
+ 			 <!--TC12, TC13-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderInformationIsNotDisplayedOrUpdatedInScheduler"/>
+ 			 <!--TC14, TC15-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderCreatedReplacesExistingMeetingInTablet"/>
+ 			 <!--TC20-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsCreatedIfStartTimeIsInThePastAndEndTimeIsInTheFuture"/>		
+ 			 <!--TC21-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsCreatedIfDescriptionIsEmpty"/>
+ 			 <!--TC22, TC33-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsNotCreatedIfTitleIsEmpty"/>
+ 			 <!--TC23, TC34-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsNotCreatedIfTitleContainsOnlySpaces"/>		
+ 			 <!--TC26, TC35-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsNotCreatedIfStartTimeAndEndTimeAreInThePast"/>	
+ 			 <!--TC27, TC36-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsNotCreatedIfEndTimeOccursBeforeStartTime"/>
+ 			 <!--TC28, TC37-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.OutOfOrderIsNotCreatedIfEndDateOccursBeforeStartDate"/>
+ 			 <!--TC38, TC39-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.StartAndEndDateAreSetForCurrentTimeByDefault"/>	 					 				
+ 			 <!--TC40, TC41-->
+ 			 <class name="tests.admin.conferenceroomoutoforder.StartAndEndTimeAreSetForTheNextHalfHourPeriod"/>	  
+ 		</classes>
+ 	</test>
+</suite>
+
