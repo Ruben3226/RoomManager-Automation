@@ -1,0 +1,44 @@
+<suite name  =  "conferenceroom_Test_Suite">
+	<listeners>
+         <listener class-name  =  "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name  =  "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name  =  "main.java.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name  =  "RoomManager">
+         <classes>	
+         
+         	<class name = "test.java.admin.conferenceroom.startTestSuite" />		
+			<!--TC27, TC32, TC08-->
+			<class name = "test.java.admin.conferenceroom.ResourceQuantityIsDisplayedInTheResourceAssociatedColumnInRoomGrid" />			      
+            <!--TC10-->
+			<class name = "test.java.admin.conferenceroom.AnEnabledRoomIsAvailableInTheTablet" />	
+			<!--TC11-->
+			<class name = "test.java.admin.conferenceroom.ForARoomDisabledTheTabletDoesNotScheduleMeetings" />
+			<!--TC12, TC13-->
+			<class name = "test.java.admin.conferenceroom.RoomAvailabilityCanBeEnabledOrDisabledWithEnableDisableButton" />	
+			<!--TC24-->
+           	<class name = "test.java.admin.conferenceroom.RoomLocationNotAllowsInexistentLocation" />
+            <!--TC04, TC05, TC06, TC07-->	
+            <class name = "test.java.admin.conferenceroom.RoomDisplayNameCanBeChanged" />
+			<!--TC12-->	
+			<class name = "test.java.admin.conferenceroom.DoesNotAllowsBlankTextForDisplayName" />
+	  		<!--TC11-->	
+	  		<class name = "test.java.admin.conferenceroom.DefaultRoomInformationAreDisplayedInConferenceRoomPage" />
+			<!--TC13-->	
+			<class name = "test.java.admin.conferenceroom.IsNotAllowedInsertLongNumbersInCapacityFieldOfRooms" />
+	   		<!--TC14-->	
+	   		<class name = "test.java.admin.conferenceroom.IsNotAllowedInsertNonNumberInputsIntoCapacityFieldOfRooms" />
+		    <!--TC23-->
+		    <class name = "test.java.admin.conferenceroom.SaveButtonSaveChangesMadeInRoomInfoPage" />
+		  	<!--TC01-->	
+		  	<class name = "test.java.admin.conferenceroom.RoomAvailabilityCanBeDisableFromRoomInfoPage" />
+	   		<!--TC09-->	
+	   		<class name = "test.java.admin.conferenceroom.CoderoomsIsReflectedInTablet" />
+	   		<!--TC10-->	
+	   		<class name = "test.java.admin.conferenceroom.DisplayNameIsReflectedInTablet" />
+	   		<!--TC08-->	
+	   		<class name = "test.java.admin.conferenceroom.ChangesInCapacityisReflectedInTablet" />
+		</classes>
+    </test>
+</suite>

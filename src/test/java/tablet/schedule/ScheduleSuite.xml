@@ -1,0 +1,70 @@
+<suite name = "RoomManager">
+	<listeners>
+        <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+        <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+        <listener class-name = "main.java.utils.ReportNGListener"/>
+	</listeners>
+	<test name = "Schedule test" >
+		<classes>
+			<class name = "test.java.tablet.schedule.StartTest"/>
+			<!--TC07-->
+			<class name = "test.java.tablet.schedule.CreateMeetingWhenRoomIsAvailable"/>
+			<!--TC18, TC28, TC29-->
+			<class name = "test.java.tablet.schedule.CreateMeetingWhenNotHasBodyAndConfirmsAttendeePressingEnterOrSemicolon"/>			
+			<!--TC10-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeCreatedWithoutAttendees"/>
+			<!--TC08-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeCreatedWithoutOrganizer"/>
+			<!--TC9-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeCreatedWithoutSubject"/>
+			<!--TC12-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeUpdatedWhenItHasConflictsWithOtherMeeting"/>
+			<!--TC19, TC20-->
+			<class name = "test.java.tablet.schedule.InformationOfMeetingIsDisplayed"/>
+			<!--TC11-->
+			<class name = "test.java.tablet.schedule.UpdateMeetingWhenItNotHasConflictsWithOtherMeeting"/>
+			<!--TC15-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeCreatedWhenItHasConflictsWithAnotherMeeting"/>
+			<!--TC13-->
+			<class name = "test.java.tablet.schedule.AMeetingCanBeDeleted"/>
+			<!--TC25-->
+			<class name = "test.java.tablet.schedule.QuantityOfCharactersToSubjectIsLimited"/>
+			<!--TC26-->
+			<class name = "test.java.tablet.schedule.QuantityOfCharactersOfOrganizerIsLimited"/>
+			<!--TC41-->
+			<class name = "test.java.tablet.schedule.HomePageIsDisplayedWhenBackButtonIsClicked"/>
+			<!--TC45-->
+			<class name = "test.java.tablet.schedule.MeetingInformationIsNotUpdatedWhenUpdateButtonIsNotClickedAfterEditItsValues"/>	
+			<!--TC48-->
+			<class name = "test.java.tablet.schedule.AnErrorMessageIsDisplayedWhenStartTimeIsLaterThanEndTime"/>	
+			<!--TC35-->
+			<class name = "test.java.tablet.schedule.ClickingInTimelineAllFieldsAreCleaned"/>
+			<!--TC34-->
+			<class name = "test.java.tablet.schedule.AttenddesTxtBoxDoesNotAllowInvalidAttendees"/>
+			<!--TC30-->
+			<class name = "test.java.tablet.schedule.DefaultTimeOfMeetingIs30Minutes"/>
+			<!--TC23-->
+			<class name = "test.java.tablet.schedule.AMeetingCannotBeCreatedWhenAnOutOfOurderIsActivated"/>	
+			<!--TC44-->
+			<class name = "test.java.tablet.schedule.ClickingBackButtonGoesToThePreviousPage"/>
+			<!--TC43-->
+			<class name = "test.java.tablet.schedule.ClickingTheRightArrowDisplaysTheSearchPage"/>
+			<!--TC22-->
+			<class name = "test.java.tablet.schedule.ScheduleOfAMeetingIsChangedByMovingItInsideTheTimeLineIfUpdateButtonIsClicked"/>
+			<!--TC17-->
+			<class name = "test.java.tablet.schedule.ScheduleOfAMeetingIsNotChangedByMovingItInsideTheTimeLineIfUpdateButtonIsNotClicked"/>
+			<!--TC23-->
+			<class name = "test.java.tablet.schedule.TheDurationOfTheMeetingIsChangedResizingInTimelineAndClickingUpdate"/>			
+			<!--TC18-->
+			<class name = "test.java.tablet.schedule.TheDurationOfTheMeetingIsNotChangedResizingInTimelineButNotClickingUpdate"/>	
+			<!--TC38-->
+			<class name = "test.java.tablet.schedule.TheRedLineInTheTimelineIsInTheCurrentTime"/>
+			<!---TC24  -->
+            <class name = "test.java.tablet.schedule.DoubleClickingATimelinePeriodCreatesAMeetingBoxAndSetNewMeetingTime"/>
+            <!---TC32, TC44 -->
+            <class name = "test.java.tablet.schedule.TimeTextDisplayedInTimeLine"/>    
+            <!---TC46 -->
+            <class name = "test.java.tablet.schedule.AlertMessageIsDisplayedWhenAmeetingIsCreatedInThePast"/> 			
+		</classes>
+	</test>
+</suite>

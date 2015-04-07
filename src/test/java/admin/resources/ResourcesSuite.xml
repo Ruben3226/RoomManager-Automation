@@ -1,0 +1,25 @@
+<suite name = "Resources_Test_Suite">
+	<listeners>
+         <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name = "main.java.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name = "RoomManager">
+        <classes>
+        	<class name = "test.java.admin.resources.StartTestSuiteResources" />
+        		<!--TC18-->
+        		<class name = "test.java.admin.resources.TotalItemsInformationLabelDisplaysResourcesQuantity" />
+				<!--TC21-->
+				<class name = "test.java.admin.resources.SelectedItemsLblInformationDisplaysTheNumberOfCheckedResources" />						
+				<!--TC35-->
+				<class name = "test.java.admin.resources.AnErrorMessageIsDisplayedWhenAResourceWithANameRegisteredIsAdded" />
+				<!--TC37-->
+				<class name = "test.java.admin.resources.AnErrorMessageIsDisplayedWhenAResourceIsUpdatedWithANameAlreadyRegistered" />
+				<!--TC40, TC41-->
+				<class name = "test.java.admin.resources.AnErrorMessageIsDisplayedWhenTextBoxesAreLeftEmptyInAddForm" />
+				<!--TC42, TC43-->
+				<class name = "test.java.admin.resources.AnErrorMessageIsDisplayedWhenTextBoxesAreLeftEmptyInResourceInfoForm" />
+		</classes>
+    </test>
+</suite>

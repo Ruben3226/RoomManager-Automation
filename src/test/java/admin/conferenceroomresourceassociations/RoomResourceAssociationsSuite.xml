@@ -1,0 +1,33 @@
+<suite name = "conferenceroomresourceassociations_Test_Suite">
+	<listeners>
+         <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+         <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+         <listener class-name = "main.java.utils.ReportNGListener"/>
+    </listeners>
+	
+    <test name = "RoomManager">
+        <classes>
+            <class name = "test.java.admin.conferenceroomresourceassociations.StartTestSuiteRoomResourcesAsociations" />
+			<!--TC05-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.AllResourcesCreatedAreDisplayedInAvailableGridOfResourceAssociationsPage" />
+			<!--TC02-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.AResourceCanBeAssociatedToARoomEnabled" />
+			<!--TC04-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ADeletedResourceIsRemovedFromAvailableGridInARoom" />
+			<!--TC01-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ADeletedResourceIsRemovedFromResourcesAssociatedInARoom" />
+			<!--TC03-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ResourcesAssociatedToARoomEnabledCanBeRemoved" />
+			<!--TC06-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ResourcesQuantityCanBeModifyWhenItIsAssociatedToARoom" />
+			<!--TC08-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ResourceAssociatedToRoomThatIsDeletedIsRemovedOnHomePage" />
+	   		<!--TC07-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ResourcesAssociatedToRoomAreDisplayedOnHomePage" />
+        	<!--TC09-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ResourceCanBeAssociatedToDisabledRoom" />
+		 	<!--TC11-->
+			<class name = "test.java.admin.conferenceroomresourceassociations.ChangesInResourcesAssociationsFormAreDiscardedWhenTheyAreCanceled" />
+        </classes>
+    </test>
+</suite>

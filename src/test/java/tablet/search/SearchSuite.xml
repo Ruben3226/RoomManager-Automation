@@ -1,0 +1,50 @@
+<suite name = "Search">
+<listeners>
+            <listener class-name = "org.uncommons.reportng.HTMLReporter"/>
+            <listener class-name = "org.uncommons.reportng.JUnitXMLReporter"/>
+            <listener class-name = "main.java.utils.ReportNGListener"/>
+</listeners>
+	<test name = "Search test" >
+		<classes>
+			<class name = "test.java.tablet.search.StartSuite"/>
+			<!--TC02-->
+			<class name = "test.java.tablet.search.AllResourcesAreDisplayed"/>
+			<!--TC06-->
+			<class name = "test.java.tablet.search.AllRoomsareDisplayedWhenPageisLoaded"/>
+			<!--TC18-->
+			<class name = "test.java.tablet.search.DateDisplayedIsTheCurrent"/>
+			<!--TC14-->
+			<class name = "test.java.tablet.search.MinimumCapacityOnlyAllowNumbers"/>
+			<!--TC12-->
+			<class name = "test.java.tablet.search.MinimumCapacityShowAmessageWhenInsertInvalidValues"/>
+			<!--TC19-->
+			<class name = "test.java.tablet.search.TimeLineDisplayedIsInCurrentTime"/>
+			<!--TC13-->
+			<class name = "test.java.tablet.search.WhenPressAdvancedallCriteriasAreDisplayed"/>
+			<!--TC16-->
+			<class name = "test.java.tablet.search.WhenPressAdvancedTwiceAllSearchCriteriasAreHidden"/>
+			<!--TC15-->
+			<class name = "test.java.tablet.search.WhenPressClearAllCriteriasAreCleaned"/>
+			<!--TC03-->
+			<class name = "test.java.tablet.search.WhenPutLetterOnRoomNameFieldRoomsThatMatchAreFiltered"/>
+			<!--TC09-->
+			<class name = "test.java.tablet.search.WhenPutMinimumCapFieldAndLocationRoomsThatMatchAreFiltered"/>
+			<!--TC04-->
+			<class name = "test.java.tablet.search.WhenPutMinimumCapFieldRoomsThatMatchAreFiltered"/>
+			<!--TC08-->
+			<class name = "test.java.tablet.search.WhenPutRoomNameFieldAndLocationRoomsThatMatchAreFiltered"/>
+			<!--TC10-->
+			<class name = "test.java.tablet.search.WhenPutRoomNameFieldAndResourceRoomsThatMatchAreFiltered"/>
+			<!--TC11-->
+			<class name = "test.java.tablet.search.WhenPutRoomNameMinimumCapFieldRoomsThatMatchAreFiltered"/>
+			<!--TC17-->
+			<class name = "test.java.tablet.search.WhenSelectBackButtonHomePageAreDisplayed"/>
+			<!--TC05-->
+			<class name = "test.java.tablet.search.WhenSelectLocationRoomsThatMatchAreFiltered"/>
+			<!--TC20-->
+			<class name = "test.java.tablet.search.WhenSelectResourceRoomsThatMatchAreFiltered"/>
+			<!--TC07-->
+			<class name = "test.java.tablet.search.WhenSelectRoomSchedulerofThisAreDisplayed"/>
+		</classes>
+	</test>
+</suite>
